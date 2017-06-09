@@ -41,21 +41,6 @@ public class StarterApplication extends Application {
                 .build()
         );
 
-        ParseObject object = new ParseObject("ExampleObject");
-        object.put("MyNumber", "123");
-        object.put("MyString","String");
-
-        object.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.i("Result", "Successful");
-                }
-                else {
-                    Log.i("Result",":" + e.getMessage());
-                }
-            }
-        });
         ParseUser.enableAutomaticUser();
 
         ParseACL defaultACL = new ParseACL();
