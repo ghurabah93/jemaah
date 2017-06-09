@@ -1,13 +1,35 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.ghurabah.jemaah.ShareFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_offers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_my_offers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="48dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical"
+            android:background="#efefef"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
     <TextView
+        android:id="@+id/text_view_empty_recycler_view_offers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hello share"/>
+        android:padding="16dp"
+        android:gravity="center"
+        android:text="no offer"
+        android:visibility="gone"/>
 
-</FrameLayout>
+    <include layout="@layout/floating_action_button_create_share"/>
+
+</android.support.design.widget.CoordinatorLayout>

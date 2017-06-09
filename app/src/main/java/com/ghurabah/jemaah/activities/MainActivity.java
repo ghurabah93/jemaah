@@ -1,4 +1,4 @@
-package com.ghurabah.jemaah;
+package com.ghurabah.jemaah.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,8 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.ghurabah.jemaah.R;
+import com.ghurabah.jemaah.fragments.ShareFragment;
+import com.ghurabah.jemaah.fragments.HistoryFragment;
+import com.ghurabah.jemaah.fragments.JoinFragment;
 
 public class MainActivity extends AppCompatActivity {
 

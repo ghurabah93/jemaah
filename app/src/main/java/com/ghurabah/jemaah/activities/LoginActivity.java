@@ -1,4 +1,4 @@
-package com.ghurabah.jemaah;
+package com.ghurabah.jemaah.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ghurabah.jemaah.R;
 import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
