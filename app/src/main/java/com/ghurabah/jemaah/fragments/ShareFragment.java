@@ -39,6 +39,7 @@ public class ShareFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayoutOffers;
 
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +47,11 @@ public class ShareFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_share, container, false);
         swipeRefreshLayoutOffers = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_offers);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_my_offers);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
         return view;
     }
 
@@ -55,6 +61,8 @@ public class ShareFragment extends Fragment {
 
         initFab();
         initRecyclerView();
+        sharesAdapter = new SharesAdapter(getContext());
+
         getSharesFromServer();
     }
 
@@ -133,15 +141,11 @@ public class ShareFragment extends Fragment {
                         }
                     }
 
-                    sharesAdapter = new SharesAdapter(getContext());
 
                     sharesAdapter.setShares(shares);
                     sharesAdapter.notifyDataSetChanged();
 
-                    RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view_my_offers);
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setHasFixedSize(true);
+
 
                     recyclerView.setAdapter(sharesAdapter);
 

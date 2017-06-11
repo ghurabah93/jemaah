@@ -25,7 +25,6 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -39,13 +38,20 @@ public class HistoryFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayoutOffers;
 
+    private RecyclerView recyclerView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_history, container, false);
-        swipeRefreshLayoutOffers = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_offers);
+        swipeRefreshLayoutOffers = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_joins);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_my_joins);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
         return view;
     }
 
@@ -54,10 +60,9 @@ public class HistoryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         initRecyclerView();
+        historyAdapter = new HistoryAdapter(getContext());
         getJoinsFromServer();
     }
-
-    
 
 
     private void initRecyclerView() {
@@ -80,11 +85,10 @@ public class HistoryFragment extends Fragment {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Join");
         query.whereEqualTo("joiner", joinerParseUser);
-        query.orderByDescending("meetupTime");
+        query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(final List<ParseObject> joinList, ParseException e) {
-                swipeRefreshLayoutOffers.setRefreshing(false);
 
                 if (e == null) {
                     final List<Join> joins = new ArrayList<Join>();
@@ -100,62 +104,60 @@ public class HistoryFragment extends Fragment {
                             ParseRelation<ParseObject> relation = p.getRelation("share");
                             final Share[] share = new Share[1];
                             relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-                                                                     @Override
-                                                                     public void done(List<ParseObject> objects, ParseException e) {
+                                @Override
+                                public void done(List<ParseObject> objects, ParseException e) {
 
-                                                                         final ParseObject shareParseObject = objects.get(0);
-                                                                         final ParseRelation<ParseUser> relation = shareParseObject.getRelation("sharer");
+                                    final ParseObject shareParseObject = objects.get(0);
+                                    final ParseRelation<ParseUser> relationUser = shareParseObject.getRelation("sharer");
 
-                                                                         final ParseUser[] sharer = {null};
-                                                                         relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
-                                                                                                                  @Override
-                                                                                                                  public void done(List<ParseUser> objects, ParseException e) {
+                                    final ParseUser[] sharer = {null};
+                                    relationUser.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                                        @Override
+                                        public void done(List<ParseUser> objects, ParseException e) {
+                                            if (e == null && objects != null) {
 
-                                                                                                                      sharer[0] = objects.get(0);
-                                                                                                                      share[0] = new Share(sharer[0],
-                                                                                                                              shareParseObject.getObjectId(), shareParseObject.getString("startLocationName"),
-                                                                                                                              shareParseObject.getString("startLocationAddress"),
-                                                                                                                              new LatLng(shareParseObject.getNumber("startLatitude").doubleValue(), shareParseObject.getNumber("startLongitude").doubleValue()),
-                                                                                                                              shareParseObject.getString("endLocationName"), shareParseObject.getString("endLocationAddress"),
-                                                                                                                              new LatLng(shareParseObject.getNumber("endLatitude").doubleValue(), shareParseObject.getNumber("endLongitude").doubleValue()),
-                                                                                                                              shareParseObject.getNumber("seatsRemaining").intValue(),
-                                                                                                                              shareParseObject.getNumber("seatsJoined").intValue(),
-                                                                                                                              shareParseObject.getNumber("seatsShared").intValue(),
-                                                                                                                              shareParseObject.getDate("meetupTime"),
-                                                                                                                              shareParseObject.getNumber("estimatedCost").doubleValue(),
-                                                                                                                              shareParseObject.getString("remarks"),
-                                                                                                                              shareParseObject.getString("preference"));
+                                                sharer[0] = objects.get(0);
+                                                share[0] = new Share(sharer[0],
+                                                        shareParseObject.getObjectId(), shareParseObject.getString("startLocationName"),
+                                                        shareParseObject.getString("startLocationAddress"),
+                                                        new LatLng(shareParseObject.getNumber("startLatitude").doubleValue(), shareParseObject.getNumber("startLongitude").doubleValue()),
+                                                        shareParseObject.getString("endLocationName"), shareParseObject.getString("endLocationAddress"),
+                                                        new LatLng(shareParseObject.getNumber("endLatitude").doubleValue(), shareParseObject.getNumber("endLongitude").doubleValue()),
+                                                        shareParseObject.getNumber("seatsRemaining").intValue(),
+                                                        shareParseObject.getNumber("seatsJoined").intValue(),
+                                                        shareParseObject.getNumber("seatsShared").intValue(),
+                                                        shareParseObject.getDate("meetupTime"),
+                                                        shareParseObject.getNumber("estimatedCost").doubleValue(),
+                                                        shareParseObject.getString("remarks"),
+                                                        shareParseObject.getString("preference"));
 
-                                                                                                                      Join join = new Join(joinId, joinStatus, joinerParseUser, seatsJoined, share[0]);
-                                                                                                                      joins.add(join);
-                                                                                                                      if (index == joinList.size() - 1) {
-                                                                                                                          historyAdapter = new HistoryAdapter(getContext());
-
-                                                                                                                          historyAdapter.setJoins(joins);
-                                                                                                                          historyAdapter.notifyDataSetChanged();
-
-                                                                                                                          RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view_my_joins);
-                                                                                                                          RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                                                                                                                          recyclerView.setLayoutManager(layoutManager);
-                                                                                                                          recyclerView.setHasFixedSize(true);
-
-                                                                                                                          recyclerView.setAdapter(historyAdapter);
-                                                                                                                      }
-                                                                                                                  }
-                                                                                                              });
+                                                Join join = new Join(joinId, joinStatus, joinerParseUser, seatsJoined, share[0]);
+                                                joins.add(join);
+                                                if (index == joinList.size() - 1) {
+                                                    swipeRefreshLayoutOffers.setRefreshing(false);
 
 
 
+                                                    historyAdapter.setJoins(joins);
+                                                    historyAdapter.notifyDataSetChanged();
 
-                                                                         }
-                                                                 });
+
+
+                                                    recyclerView.setAdapter(historyAdapter);
+                                                }
+                                            }
+                                        }
+                                    });
+
+
+                                }
+                            });
 
 
                         }
 
 
                     }
-
 
 
                 } else {
@@ -167,7 +169,5 @@ public class HistoryFragment extends Fragment {
 
     }
 
-
-  
 
 }

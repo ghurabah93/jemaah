@@ -312,7 +312,10 @@ public class JoinFragment extends Fragment implements OnMapReadyCallback, Google
                                         clusterManager.addItem(new ClusterMarkerLocation(share, startLatLng));
                                     }
 
-                                    clusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ShareInfoViewAdapter(LayoutInflater.from(getContext())));
+                                    if (getActivity() != null) {
+                                   clusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ShareInfoViewAdapter(LayoutInflater.from(getContext())));
+
+                                    }
 
                                     // Zoom in after markers loaded
                                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());

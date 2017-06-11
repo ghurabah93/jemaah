@@ -286,22 +286,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_remarks"
-            android:layout_toStartOf="@+id/text_view_edit"
             android:layout_marginTop="8dp"
             android:padding="12dp"
+            android:layout_alignParentEnd="true"
+
             android:background="?attr/selectableItemBackground"
             android:text="CANCEL" />
 
-        <TextView
-            android:id="@+id/text_view_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_remarks"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp"
-            android:padding="12dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="EDIT" />
+
 
         <TextView
             android:id="@+id/text_view_share_past"

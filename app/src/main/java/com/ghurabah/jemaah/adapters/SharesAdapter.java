@@ -86,11 +86,9 @@ public class SharesAdapter extends RecyclerView.Adapter<SharesAdapter.ViewHolder
 
         // Hide action buttons if share has passed
         if (share.isPast()) {
-            viewHolder.textViewEdit.setVisibility(View.GONE);
             viewHolder.textViewCancel.setVisibility(View.GONE);
             viewHolder.textViewSharePast.setVisibility(View.VISIBLE);
         } else {
-            viewHolder.textViewEdit.setVisibility(View.VISIBLE);
             viewHolder.textViewCancel.setVisibility(View.VISIBLE);
             viewHolder.textViewSharePast.setVisibility(View.INVISIBLE);
         }
@@ -285,7 +283,6 @@ public class SharesAdapter extends RecyclerView.Adapter<SharesAdapter.ViewHolder
         private TextView textViewRemarks;
         private TextView textViewSeatsLeft;
         private TextView textViewViewMore;
-        private TextView textViewEdit;
         private TextView textViewCancel;
         private TextView textViewSharePast;
         private TextView textViewTag;
@@ -308,7 +305,6 @@ public class SharesAdapter extends RecyclerView.Adapter<SharesAdapter.ViewHolder
             textViewRemarks = (TextView) view.findViewById(R.id.text_view_remarks);
             textViewViewMore = (TextView) view.findViewById(R.id.text_view_view_more);
             textViewCancel = (TextView) view.findViewById(R.id.text_view_cancel);
-            textViewEdit = (TextView) view.findViewById(R.id.text_view_edit);
             textViewSharePast = (TextView) view.findViewById(R.id.text_view_share_past);
             textViewTag = (TextView) view.findViewById(R.id.text_view_tag);
         }

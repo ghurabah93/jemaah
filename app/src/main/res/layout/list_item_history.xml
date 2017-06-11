@@ -31,10 +31,26 @@
             android:background="#979797" />
 
         <TextView
+            android:id="@+id/text_view_tag"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:gravity="center_horizontal"
+            android:layout_toLeftOf="@id/view_vertical_line"
+            android:text="Sponsored"
+            android:padding="5dp"
+            android:textColor="#ffffff"
+            android:background="@color/jemaah_primary_color"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
             android:id="@+id/text_view_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_below="@+id/text_view_tag"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:fontFamily="sans-serif"
@@ -176,7 +192,7 @@
             android:textColor="#7e7b7b"
             android:textSize="10sp"
             android:textStyle="normal"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:visibility="visible"/>
 
         <TextView
@@ -190,7 +206,7 @@
             android:textColor="#000000"
             android:textSize="13sp"
             android:textStyle="normal"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:visibility="visible"/>
 
         <TextView

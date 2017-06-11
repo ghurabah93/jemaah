@@ -20,6 +20,10 @@ import com.ghurabah.jemaah.R;
 import com.ghurabah.jemaah.models.Join;
 import com.ghurabah.jemaah.models.Share;
 import com.ghurabah.jemaah.utils.DateUtils;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.List;
 
@@ -72,6 +76,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         viewHolder.textViewStartLocationName.setText(share.getStartLocationName());
         viewHolder.textViewStartLocationAddress.setText(share.getStartLocationAddress());
         viewHolder.textViewSeatsBooked.setText(Integer.toString(join.getSeatsJoined()));
+        viewHolder.textViewTag.setText(share.getPreference());
         if (share.getRemarks() != null && !share.getRemarks().isEmpty()) {
             viewHolder.textViewRemarks.setText(share.getRemarks());
         }
@@ -137,7 +142,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final Join join = joins.get(position);
-                        //cancel join here
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Join");
+                        query.getInBackground(join.getJoinId(), new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject object, ParseException e) {
+                                if(e == null && object != null) {
+                                    object.put("joinStatus", 1);
+                                    object.saveInBackground();
+                                }
+                            }
+                        });
 
                     }
                 });
@@ -156,7 +170,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return new boolean[]{
                 viewHolder.textViewEndLocationAddress.getVisibility() == View.GONE,
                 viewHolder.textViewStartLocationAddress.getVisibility() == View.GONE,
-                viewHolder.textViewSeatsBooked.getVisibility() == View.GONE,
                 join.getShare().getRemarks() != null && !join.getShare().getRemarks().isEmpty() && viewHolder.textViewRemarks.getVisibility() == View.GONE,
                 viewHolder.textViewDriverLabel.getVisibility() == View.GONE,
                 viewHolder.textViewDriver.getVisibility() == View.GONE,
@@ -176,8 +189,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         if (shouldExpand[0]) {
             viewHolder.textViewEndLocationAddress.setVisibility(View.VISIBLE);
             viewHolder.textViewStartLocationAddress.setVisibility(View.VISIBLE);
-            viewHolder.textViewSeatsBookedLabel.setVisibility(View.VISIBLE);
-            viewHolder.textViewSeatsBooked.setVisibility(View.VISIBLE);
             if (viewHolder.textViewRemarks.getText() != null && !viewHolder.textViewRemarks.getText().toString().isEmpty()) {
                 viewHolder.textViewRemarksLabel.setVisibility(View.VISIBLE);
                 viewHolder.textViewRemarks.setVisibility(View.VISIBLE);
@@ -189,8 +200,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         } else {
             viewHolder.textViewEndLocationAddress.setVisibility(View.GONE);
             viewHolder.textViewStartLocationAddress.setVisibility(View.GONE);
-            viewHolder.textViewSeatsBookedLabel.setVisibility(View.GONE);
-            viewHolder.textViewSeatsBooked.setVisibility(View.GONE);
             if (viewHolder.textViewRemarks.getText() != null && !viewHolder.textViewRemarks.getText().toString().isEmpty()) {
                 viewHolder.textViewRemarksLabel.setVisibility(View.GONE);
                 viewHolder.textViewRemarks.setVisibility(View.GONE);
@@ -237,6 +246,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         private TextView textViewCancel;
 
         private TextView textViewJoinPast;
+        private TextView textViewTag;
 
         private RelativeLayout relativeLayoutItem;
 
@@ -260,6 +270,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             textViewDriverLabel = (TextView) view.findViewById(R.id.text_view_driver_label);
             textViewDriver = (TextView) view.findViewById(R.id.text_view_driver);
             textViewJoinPast = (TextView) view.findViewById(R.id.text_view_join_past);
+            textViewTag = (TextView) view.findViewById(R.id.text_view_tag);
         }
     }
 
