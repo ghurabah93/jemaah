@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linear_layout_create_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -73,23 +73,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Seats Available"
-                app:hintAnimationEnabled="true">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_input_edit_text_seats_available"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/jemaah_primary_color"
-                    android:ems="10"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"/>
-
-            </android.support.design.widget.TextInputLayout>
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -114,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="50dp"
                 android:background="@color/jemaah_primary_color"
                 android:text="Create Share"
                 android:textColor="#ffffff"/>
